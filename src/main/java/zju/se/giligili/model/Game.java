@@ -23,7 +23,7 @@ public class Game {
     private List<String> theme;
     private List<String> mode;
     private List<String> view;
-    @Getter private String description;
+    private String description;
     private List<String> imgUrl;
 
     public Game(String _id, String name, String introduction, String coverUrl,
@@ -44,9 +44,5 @@ public class Game {
         this.view = view;
         this.description = description;
         this.imgUrl = imgUrl;
-    }
-
-    public String getDescription() {
-        return this.description;
     }
 }
