@@ -3,9 +3,6 @@ package zju.se.giligili.serviceimpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import zju.se.giligili.dao.UserDao;
-import zju.se.giligili.model.User;
-import zju.se.giligili.service.UserService;
 
 import java.util.List;
 
