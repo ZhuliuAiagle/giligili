@@ -25,11 +25,12 @@ public class Game {
     private List<String> view;
     private String description;
     private List<String> imgUrl;
+    private Object youminData;
 
     public Game(String _id, String name, String introduction, String coverUrl,
                 String subname, String startDate,String issuer, String engine, List<String> type,
                 List<String> theme, List<String> mode, List<String> view, String description,
-                List<String> imgUrl){
+                List<String> imgUrl, Object youminData){
         this._id  = _id;
         this.name = name;
         this.subname = subname;
@@ -44,5 +45,6 @@ public class Game {
         this.view = view;
         this.description = description;
         this.imgUrl = imgUrl;
+        this.youminData = youminData;
     }
 }
