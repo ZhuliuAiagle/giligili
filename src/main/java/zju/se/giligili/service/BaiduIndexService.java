@@ -1,7 +1,7 @@
-package zju.se.giligili.dao;
+package zju.se.giligili.service;
 
 import zju.se.giligili.model.BaiduIndex;
 
-public interface BaiduIndexDao {
+public interface BaiduIndexService {
     BaiduIndex getIndex(String name);
 }
