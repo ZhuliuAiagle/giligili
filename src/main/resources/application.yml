@@ -2,5 +2,10 @@ spring:
   data:
     mongodb:
       uri: mongodb://139.155.103.174:27017/game
+    elasticsearch:
+      cluster-name: elasticsearch
+      cluster-nodes: 139.155.103.174:9300
+      repositories:
+        enabled: true
   application:
     name: giligili
