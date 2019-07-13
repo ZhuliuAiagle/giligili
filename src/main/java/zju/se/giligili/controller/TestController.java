@@ -8,17 +8,19 @@ import org.springframework.web.bind.annotation.RestController;
 import zju.se.giligili.model.Game;
 import zju.se.giligili.service.GameService;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("/game")
-public class GameController {
+@RequestMapping("/test")
+public class TestController {
     @Autowired
     private GameService gameService;
-    public GameController(GameService gameService) {
-        this.gameService = gameService;
-    }
-    @RequestMapping("/search")
-    public String getUser(@RequestParam("name") String name){
-        Game g = (Game) gameService.findAllByName(name);
-        return g.getDescription();
+    @RequestMapping("/game")
+    public List<Game>  search(@RequestParam(value = "key") String key){
+        System.out.println(key);
+        List<Game> games = gameService.findAllByName(key);
+        return games;
+
     }
 }
+

@@ -2,6 +2,8 @@ package zju.se.giligili.service;
 
 import zju.se.giligili.model.Game;
 
+import java.util.List;
+
 public interface GameService {
-    Game getGameByName(String name);
+    List<Game> findAllByName(String name);
 }

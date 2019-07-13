@@ -13,10 +13,6 @@ public class SearchController {
     private GameService gameService;
     @RequestMapping("/s")
     public String search(String key){
-        if(gameService.getGameByName(key) != null){
-            return "success";
-        }
-        else
             return "no result";
     }
 }

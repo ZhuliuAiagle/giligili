@@ -1,4 +1,7 @@
 spring:
+  main:
+    allow-bean-definition-overriding: true
+
   data:
     mongodb:
       uri: mongodb://139.155.103.174:27017/game
