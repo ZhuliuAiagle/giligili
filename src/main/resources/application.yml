@@ -1,6 +1,6 @@
 spring:
-            data:
-              mongodb:
-                uri: mongodb://139.155.103.174:27017/game
-            application:
-              name: giligili
+  data:
+    mongodb:
+      uri: mongodb://139.155.103.174:27017/game
+  application:
+    name: giligili
