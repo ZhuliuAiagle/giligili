@@ -4,4 +4,6 @@ import zju.se.giligili.model.BaiduIndex;
 
 public interface BaiduIndexService {
     BaiduIndex getIndex(String name);
+
+    BaiduIndex findIndexById(String key);
 }

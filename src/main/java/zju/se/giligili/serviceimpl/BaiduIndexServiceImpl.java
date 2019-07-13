@@ -12,4 +12,9 @@ public class BaiduIndexServiceImpl implements BaiduIndexService {
     public BaiduIndex getIndex(String name) {
         return baiduIndexDao.getIndex(name);
     }
+
+    @Override
+    public BaiduIndex findIndexById(String key) {
+        return baiduIndexDao.findIndexById(key);
+    }
 }

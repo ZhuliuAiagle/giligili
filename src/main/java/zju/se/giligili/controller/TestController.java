@@ -29,8 +29,15 @@ public class TestController {
     @RequestMapping("/index")
     public BaiduIndex index(@RequestParam(value = "key") String key){
         System.out.println(key);
-        BaiduIndex baiduIndex = baiduIndexService.getIndex(key);
-        return baiduIndex;
+
+        return baiduIndexService.getIndex(key);
+
+    }
+    @RequestMapping("/index1")
+    public BaiduIndex index1(@RequestParam(value = "key") String key){
+        System.out.println(key);
+
+        return baiduIndexService.findIndexById(key);
 
     }
 }

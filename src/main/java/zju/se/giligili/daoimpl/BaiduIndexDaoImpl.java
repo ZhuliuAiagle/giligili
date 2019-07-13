@@ -15,6 +15,12 @@ public class BaiduIndexDaoImpl implements BaiduIndexDao {
 
     @Override
     public BaiduIndex getIndex(String name) {
-        return mongoTemplate.findOne(new Query(Criteria.where("name").is(name)), BaiduIndex.class);
+        return mongoTemplate.findOne(new Query(Criteria.where("word").is(name)), BaiduIndex.class);
     }
+
+    @Override
+    public BaiduIndex findIndexById(String id) {
+        return mongoTemplate.findById(id, BaiduIndex.class);
+    }
+
 }
