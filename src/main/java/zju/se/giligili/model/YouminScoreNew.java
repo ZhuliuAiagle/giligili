@@ -6,6 +6,7 @@ import lombok.Setter;
 import org.springframework.data.annotation.Id;
 
 import java.util.List;
+import java.util.Map;
 
 @Getter
 @Setter
@@ -18,9 +19,9 @@ public class YouminScoreNew {
     String link;
     String img;
     Number userScore;
-    List<Object>  score;
+    List<Map>  score;
     public YouminScoreNew (String _id, String name, String year, String link,
-                           String img, Number userScore, List<Object> score){
+                           String img, Number userScore, List<Map> score){
         this._id = _id;
         this.name = name;
         this.year = year;

@@ -4,6 +4,7 @@ import lombok.Data;
 import org.springframework.data.annotation.Id;
 
 import java.util.List;
+import java.util.Map;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -13,7 +14,6 @@ import org.springframework.data.elasticsearch.annotations.Document;
 @Setter
 @Data
 @Document(indexName = "game")
-@org.springframework.data.mongodb.core.mapping.Document
 public class Game {
     private static final long serialVersionUID = 1L;
     @Id
@@ -31,12 +31,12 @@ public class Game {
     private List<String> view;
     private String description;
     private List<String> imgUrl;
-    private YouminScoreNew youminScoreNew;
+    private Map youminScoreNew;
 
     public Game(String _id, String name, String introduction, String coverUrl,
                 String subname, String startDate,String issuer, String engine, List<String> type,
                 List<String> theme, List<String> mode, List<String> view, String description,
-                List<String> imgUrl, YouminScoreNew youminScoreNew){
+                List<String> imgUrl, Map youminScoreNew){
         this._id  = _id;
         this.name = name;
         this.subname = subname;
