@@ -54,8 +54,6 @@ public class GameServiceImpl implements GameService {
             b.setLength(b.length() - 1);
             conditions = b.toString();
         }
-        System.out.println("11"+conditions);
         return gameRepository.searchByConditions(key, conditions);
     }
-
 }
