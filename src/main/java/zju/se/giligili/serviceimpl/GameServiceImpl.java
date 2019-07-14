@@ -23,4 +23,8 @@ public class GameServiceImpl implements GameService {
     public Optional<Game> findOneById(String id){
         return gameRepository.findById(id);
     }
+    @Override
+    public List<Game> findAllByIntroduction(String key) {
+        return gameRepository.findAllByIntroduction(key);
+    }
 }
