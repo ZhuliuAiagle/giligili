@@ -35,7 +35,19 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public List<Game> searchByConditions(String key, String type, String theme, String mode) {
-        String conditions = null;
+        String conditions = "";
+        String format = "{\"match\":{\"%s.keyword\":\"%s\"}}";
+        if(type != null && !type.equals("")){
+            conditions += String.format(format,"type",type);
+            conditions += ",";
+        }
+        if(theme != null && !theme.equals("")){
+            conditions += String.format(format,"theme",theme);
+            conditions += ",";
+        }
+        if(mode != null && !mode.equals("")){
+            conditions += String.format(format,"mode",mode);
+        }
         return gameRepository.searchByConditions(key, conditions);
     }
 
