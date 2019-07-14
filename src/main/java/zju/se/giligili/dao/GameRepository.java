@@ -28,6 +28,26 @@ public interface GameRepository extends ElasticsearchRepository<Game, String> {
             "}")
     List<Game> searchLazy(String key);
 
-    @Query()
+    @Query("{\n" +
+            "    \"query\": {\n" +
+            "        \"bool\": {\n" +
+            "            \"should\": {\n" +
+            "                \"multi_match\": {\n" +
+            "                    \"query\": \"?0\",\n" +
+            "                    \"type\": \"best_fields\",\n" +
+            "                    \"fields\": [\n" +
+            "                        \"name^5\",\n" +
+            "                        \"introduction^2\",\n" +
+            "                        \"description^2\"\n" +
+            "                    ],\n" +
+            "                    \"tie_breaker\": 0.6\n" +
+            "                }\n" +
+            "            },\n" +
+            "            \"must\": [\n" +
+            "                ?1\n" +
+            "            ]\n" +
+            "        }\n" +
+            "    }\n" +
+            "}")
     List<Game> searchByConditions(String key, String conditions);
 }
