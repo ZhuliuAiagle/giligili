@@ -47,6 +47,12 @@ public class GameServiceImpl implements GameService {
         }
         if(mode != null && !mode.equals("")){
             conditions += String.format(format,"mode",mode);
+            conditions += ",";
+        }
+        if(!conditions.equals("")) {
+            StringBuilder b = new StringBuilder(conditions);
+            b.setLength(b.length() - 1);
+            conditions = b.toString();
         }
         System.out.println("11"+conditions);
         return gameRepository.searchByConditions(key, conditions);

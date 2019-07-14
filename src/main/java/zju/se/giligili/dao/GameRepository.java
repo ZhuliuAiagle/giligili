@@ -42,7 +42,7 @@ public interface GameRepository extends ElasticsearchRepository<Game, String> {
             "                \"tie_breaker\": 0.6\n" +
             "            }\n" +
             "        },\n" +
-            "        \"must\": [?1]\n" +
+            "        \"must\": [?1]" +
             "    }\n" +
             "}")
     List<Game> searchByConditions(String key, String conditions);
