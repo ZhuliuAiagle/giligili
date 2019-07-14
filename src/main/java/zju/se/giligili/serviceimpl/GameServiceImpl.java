@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import zju.se.giligili.dao.GameRepository;
 import zju.se.giligili.model.Game;
@@ -38,7 +39,7 @@ public class GameServiceImpl implements GameService {
     @Override
     public Page<Game> searchByConditions(String key, String type, String theme, String mode, int page) {
         String conditions = "";
-        Pageable pageable = PageRequest.of((page - 1), 10);
+        Pageable pageable = PageRequest.of((page - 1), 10, Sort.Direction.DESC, "youminData.userScore");
         String format = "{\"match\":{\"%s.keyword\":\"%s\"}}";
         if(type != null && !type.equals("")){
             conditions += String.format(format,"type",type);

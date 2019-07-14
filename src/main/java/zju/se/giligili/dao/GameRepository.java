@@ -37,16 +37,15 @@ public interface GameRepository extends ElasticsearchRepository<Game, String> {
             "            \"multi_match\": {\n" +
             "                \"query\": \"?0\",\n" +
             "                \"type\": \"best_fields\",\n" +
-            "                \"fields\": [\n" +
-            "                    \"name^5\",\n" +
-            "                    \"introduction^2\",\n" +
-            "                    \"description^2\"\n" +
-            "                ],\n" +
+            "                \"fields\": [\"name^5\", \"introduction^2\", \"description^2\"],\n" +
             "                \"tie_breaker\": 0.6\n" +
             "            }\n" +
             "        },\n" +
-            "        \"must\": [?1]" +
-            "    }\n" +
+            "        \"must\": [?1],\n" +
+            "        \"filter\": {\n" +
+            "            \"range\": {\"startDate\" : {?2} }\n" +
+            "        }\n" +
+            "    }   \n" +
             "}")
-    Page<Game> searchByConditions(String key, String conditions, Pageable pageable);
+    Page<Game> searchByConditions(String key, String conditions, String filter, Pageable pageable);
 }
