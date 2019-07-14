@@ -8,6 +8,7 @@ import zju.se.giligili.model.Game;
 import zju.se.giligili.service.GameService;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service("gameService")
 public class GameServiceImpl implements GameService {
@@ -18,9 +19,8 @@ public class GameServiceImpl implements GameService {
     public List<Game> findAllByName(String name) {
         return gameRepository.findAllByName(name);
     }
-
     @Override
-    public List<Game> findAllByIntroduction(String key) {
-        return gameRepository.findAllByIntroduction(key);
+    public Optional<Game> findOneById(String id){
+        return gameRepository.findById(id);
     }
 }

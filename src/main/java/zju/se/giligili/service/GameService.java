@@ -3,8 +3,9 @@ package zju.se.giligili.service;
 import zju.se.giligili.model.Game;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface GameService {
     List<Game> findAllByName(String name);
-    List<Game> findAllByIntroduction(String key);
+    Optional<Game> findOneById(String id);
 }
