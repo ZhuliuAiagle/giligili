@@ -28,7 +28,7 @@ public class TestController {
     public List<Game>  search(@RequestParam(value = "key") String key){
         System.out.println(key);
 //        List<Game> games = gameService.findAllByName(key);
-        List<Game> games = gameService.findAllByNameOrIntroductionOrDescription(key);
+        List<Game> games = gameService.findAllByIntroduction(key);
         return games;
 
 

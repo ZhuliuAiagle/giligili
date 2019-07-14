@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface GameService {
     List<Game> findAllByName(String name);
-    List<Game> findAllByNameOrIntroductionOrDescription(String key);
+    List<Game> findAllByIntroduction(String key);
 }

@@ -20,7 +20,7 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public List<Game> findAllByNameOrIntroductionOrDescription(String key) {
-        return findAllByNameOrIntroductionOrDescription(key);
+    public List<Game> findAllByIntroduction(String key) {
+        return gameRepository.findAllByIntroduction(key);
     }
 }
