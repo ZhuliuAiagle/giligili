@@ -7,15 +7,16 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 import zju.se.giligili.dao.BaiduIndexDao;
 import zju.se.giligili.model.BaiduIndex;
+import org.bson.types.ObjectId;
 
-@Repository
+@Repository("baiduIndexDao")
 public class BaiduIndexDaoImpl implements BaiduIndexDao {
     @Autowired
     private MongoTemplate mongoTemplate;
 
     @Override
     public BaiduIndex getIndex(String name) {
-        return mongoTemplate.findOne(new Query(Criteria.where("word").is(name)), BaiduIndex.class);
+        return mongoTemplate.findOne(new Query(Criteria.where("name").is(name)), BaiduIndex.class);
     }
 
     @Override

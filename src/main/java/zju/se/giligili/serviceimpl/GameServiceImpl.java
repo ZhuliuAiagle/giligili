@@ -14,11 +14,6 @@ public class GameServiceImpl implements GameService {
     @Autowired
     private GameRepository gameRepository;
 
-
-    public GameServiceImpl(GameRepository gameRepository) {
-        this.gameRepository = gameRepository;
-    }
-
     @Override
     public List<Game> findAllByName(String name) {
         return gameRepository.findAllByName(name);

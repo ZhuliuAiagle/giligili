@@ -11,7 +11,7 @@ import java.util.Map;
 
 @Getter
 @Setter
-@Document
+@Document(collection = "baiduIndex")
 @NoArgsConstructor
 @AllArgsConstructor
 public class BaiduIndex {

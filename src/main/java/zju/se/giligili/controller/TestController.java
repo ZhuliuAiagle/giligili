@@ -17,6 +17,7 @@ import java.util.List;
 public class TestController {
     @Autowired
     private GameService gameService;
+    @Autowired
     private BaiduIndexService baiduIndexService;
     
     @RequestMapping("/game")
@@ -29,8 +30,8 @@ public class TestController {
     @RequestMapping("/index")
     public BaiduIndex index(@RequestParam(value = "key") String key){
         System.out.println(key);
-
-        return baiduIndexService.getIndex(key);
+        BaiduIndex baiduIndex = baiduIndexService.getIndex(key);
+        return baiduIndex;
 
     }
     @RequestMapping("/index1")
