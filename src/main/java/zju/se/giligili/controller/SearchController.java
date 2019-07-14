@@ -50,13 +50,28 @@ public class SearchController {
                                   @RequestParam(name="type",required=false,defaultValue="") String type,
                                   @RequestParam(name="theme",required=false,defaultValue="") String theme,
                                   @RequestParam(name="mode",required=false,defaultValue="") String mode){
-
-        // TODO
-        Map ret = search(key);
-        if((int)ret.get("status") == 200 && (int)ret.get("resultCount") > 0){
-
+        Map ret = new HashMap();
+        try {
+            List<Game> games = gameService.searchByConditions(key, type, theme, mode);
+            if(games == null){
+                ret.put("status",200);
+                ret.put("results_count", 0);
+                ret.put("data", new ArrayList());
+                return ret;
+            }
+            else{
+                ret.put("status",200);
+                ret.put("resultsCount", games.size());
+                ret.put("data", games);
+                return ret;
+            }
         }
-        return ret;
+        catch(Exception e){
+            e.printStackTrace();
+            ret.put("status",500);
+            ret.put("errMsg",e.getMessage());
+            return ret;
+        }
     }
     @RequestMapping("/game/{id}")
     public Map game(@PathVariable String id){
