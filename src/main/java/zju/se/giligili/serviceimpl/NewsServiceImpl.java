@@ -3,7 +3,6 @@ package zju.se.giligili.serviceimpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import zju.se.giligili.dao.NewsRespository;
-import zju.se.giligili.model.Game;
 import zju.se.giligili.model.News;
 import zju.se.giligili.service.NewsService;
 
