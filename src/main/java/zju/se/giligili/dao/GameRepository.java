@@ -1,10 +1,13 @@
 package zju.se.giligili.dao;
 
+
 import org.springframework.data.elasticsearch.annotations.Query;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 import org.springframework.stereotype.Repository;
 import zju.se.giligili.model.Game;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import java.util.List;
 import java.util.Optional;
 
@@ -45,5 +48,5 @@ public interface GameRepository extends ElasticsearchRepository<Game, String> {
             "        \"must\": [?1]" +
             "    }\n" +
             "}")
-    List<Game> searchByConditions(String key, String conditions);
+    Page<Game> searchByConditions(String key, String conditions, Pageable pageable);
 }
