@@ -15,7 +15,7 @@ import org.springframework.data.elasticsearch.annotations.Document;
 @Data
 @Document(indexName = "game", type = "game")
 public class Game {
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = -5440668610178634891L;
     @Id
     private String _id;
     private String name;
