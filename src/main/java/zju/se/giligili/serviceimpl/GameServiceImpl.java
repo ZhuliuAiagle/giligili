@@ -48,6 +48,7 @@ public class GameServiceImpl implements GameService {
         if(mode != null && !mode.equals("")){
             conditions += String.format(format,"mode",mode);
         }
+        System.out.println("11"+conditions);
         return gameRepository.searchByConditions(key, conditions);
     }
 

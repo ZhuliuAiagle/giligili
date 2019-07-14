@@ -31,8 +31,6 @@ public class TestController {
         List<Game> games = gameService.searchLazy(key);
         return games;
 
-
-
     }
     @RequestMapping("/index")
     public BaiduIndex index(@RequestParam(value = "key") String key){
