@@ -2,6 +2,7 @@ package zju.se.giligili.controller;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -49,10 +50,11 @@ public class SearchController {
     public Map searchByConditions(@RequestParam(name="key") String key,
                                   @RequestParam(name="type",required=false,defaultValue="") String type,
                                   @RequestParam(name="theme",required=false,defaultValue="") String theme,
-                                  @RequestParam(name="mode",required=false,defaultValue="") String mode){
+                                  @RequestParam(name="mode",required=false,defaultValue="") String mode,
+                                  @RequestParam(name="page",required=false,defaultValue="1") int page){
         Map ret = new HashMap();
         try {
-            List<Game> games = gameService.searchByConditions(key, type, theme, mode);
+            Page<Game> games = gameService.searchByConditions(key, type, theme, mode, page);
             if(games == null){
                 ret.put("status",200);
                 ret.put("results_count", 0);
@@ -61,7 +63,7 @@ public class SearchController {
             }
             else{
                 ret.put("status",200);
-                ret.put("resultsCount", games.size());
+                ret.put("resultsCount", games.getSize());
                 ret.put("data", games);
                 return ret;
             }
