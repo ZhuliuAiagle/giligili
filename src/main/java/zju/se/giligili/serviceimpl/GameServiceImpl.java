@@ -27,4 +27,16 @@ public class GameServiceImpl implements GameService {
     public List<Game> findAllByIntroduction(String key) {
         return gameRepository.findAllByIntroduction(key);
     }
+
+    @Override
+    public List<Game> searchLazy(String key) {
+        return gameRepository.searchLazy(key);
+    }
+
+    @Override
+    public List<Game> searchByConditions(String key, String type, String theme, String mode) {
+        String conditions = null;
+        return gameRepository.searchByConditions(key, conditions);
+    }
+
 }

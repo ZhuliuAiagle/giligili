@@ -9,4 +9,6 @@ public interface GameService {
     List<Game> findAllByName(String name);
     Optional<Game> findOneById(String id);
     List<Game> findAllByIntroduction(String key);
+    List<Game> searchLazy(String key);
+    List<Game> searchByConditions(String key, String type, String theme, String mode);
 }
