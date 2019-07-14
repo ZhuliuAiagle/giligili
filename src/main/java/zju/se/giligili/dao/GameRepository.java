@@ -9,5 +9,5 @@ import java.util.List;
 @Repository("gameRepo")
 public interface GameRepository extends ElasticsearchRepository<Game, String> {
     List<Game> findAllByName(String name);
-
+    List<Game> findAllByNameOrIntroductionOrDescription(String key);
 }

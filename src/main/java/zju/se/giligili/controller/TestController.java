@@ -27,8 +27,10 @@ public class TestController {
     @RequestMapping("/game")
     public List<Game>  search(@RequestParam(value = "key") String key){
         System.out.println(key);
-        List<Game> games = gameService.findAllByName(key);
+//        List<Game> games = gameService.findAllByName(key);
+        List<Game> games = gameService.findAllByNameOrIntroductionOrDescription(key);
         return games;
+
 
     }
     @RequestMapping("/index")
