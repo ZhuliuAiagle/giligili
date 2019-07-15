@@ -52,5 +52,10 @@ public class TestController {
         return newsService.findAllByName(key);
 
     }
+
+    @RequestMapping("/test")
+    public Game game(@RequestParam(value = "key") String key) {
+        return gameService.searchByName(key);
+    }
 }
 
