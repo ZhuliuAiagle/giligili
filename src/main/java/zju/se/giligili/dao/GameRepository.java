@@ -48,4 +48,7 @@ public interface GameRepository extends ElasticsearchRepository<Game, String> {
             "    }   \n" +
             "}")
     Page<Game> searchByConditions(String key, String conditions, String filter, Pageable pageable);
+
+    @Query("{\"term\": {\"name.keyword\": \"?0\"}}")
+    Game searchByName(String name);
 }

@@ -74,4 +74,10 @@ public class GameServiceImpl implements GameService {
             return gameRepository.searchByConditions(key, conditions, filter, defaultPageble);
     }
 
+    @Override
+    public Game searchByName(String name) {
+        return gameRepository.searchByName(name);
+    }
+
+
 }

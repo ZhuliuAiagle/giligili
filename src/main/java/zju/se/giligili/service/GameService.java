@@ -12,4 +12,5 @@ public interface GameService {
     List<Game> findAllByIntroduction(String key);
     List<Game> searchLazy(String key);
     Page<Game> searchByConditions(String key, String type, String theme, String mode, String year, int page, int isOrdered);
+    Game searchByName(String name);
 }
