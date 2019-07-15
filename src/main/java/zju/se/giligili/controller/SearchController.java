@@ -1,6 +1,7 @@
 package zju.se.giligili.controller;
 
 
+import com.kennycason.kumo.Word;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -9,8 +10,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import zju.se.giligili.model.BaiduIndex;
 import zju.se.giligili.model.Game;
+import zju.se.giligili.model.News;
+import zju.se.giligili.model.Wordcloud;
 import zju.se.giligili.service.BaiduIndexService;
 import zju.se.giligili.service.GameService;
+import zju.se.giligili.service.NewsService;
+import zju.se.giligili.service.WordcloudService;
 
 import java.util.*;
 
@@ -21,6 +26,10 @@ public class SearchController {
     private GameService gameService;
     @Autowired
     private BaiduIndexService baiduIndexService;
+    @Autowired
+    private NewsService newsService;
+    @Autowired
+    private WordcloudService wordcloudService;
     @RequestMapping("/games")
     public Map search(@RequestParam("key") String key){
         Map ret = new HashMap();
@@ -78,16 +87,13 @@ public class SearchController {
         }
     }
     @RequestMapping("/game")
-    public Map game(@RequestParam(name="id",required = false, defaultValue = "") String id,
-                    @RequestParam(name="id",required = false, defaultValue = "") String name){
+    public Map game(@RequestParam(name="id") String id) throws Exception {
         Optional<Game> game = null;
+        List<Game> competitors = null;
+        String gameName = "";
         if(!id.equals("")) {
             game = gameService.findOneById(id);
-        }
-        else if(!name.equals("")){
-
-            // TODO: 做姓名精确匹配
-
+            competitors = gameService.getCompetitors(id);
         }
         Map ret = new HashMap();
         if(game == null){
@@ -112,26 +118,73 @@ public class SearchController {
         ret.put("data",new HashMap());
         ((Map)(ret.get("data"))).put("tgbusData",g);
         Map newYouminData = new HashMap();
+        // 百度指数初始化
         BaiduIndex baiduIndex = null;
+        // 新闻初始化
+        List news = new ArrayList();
+        // 词云链接初始化
+        Wordcloud wc = new Wordcloud();
         if(g.getYouminData() != null && !g.getYouminData().isEmpty()){
             Map youminData = g.getYouminData();
+            if(youminData.containsKey("competitorInfo")) youminData.remove("competitorInfo");
             String youminName = (String)youminData.get("name");
+            // 获取youminname
+            gameName = youminName;
             List<Map> youminScore = youminData.containsKey("score")?(List)youminData.get("score"):new ArrayList();
-            List<Map> competitor = youminData.containsKey("competitorInfo")?(List)youminData.get("competitorInfo"):new ArrayList();
             newYouminData.put("score",youminScore);
-            newYouminData.put("competitor", competitor);
             // 根据youminName获取百度指数
             try {
                 baiduIndex = baiduIndexService.getIndex(youminName);
             }catch(Exception e){
                 ret.put("status",500);
+                ret.remove("data");
+                ret.put("errMsg",e.getMessage());
+                return ret;
+            }
+            // 根据youminName获取新闻
+            try{
+                news = newsService.findAllByName(youminName);
+                if(news == null || news.size() <= 0){
+                    news = new ArrayList();
+                }
+                else {
+                    News member = (News) news.get(0);
+                    news = member.getNews();
+                }
+            }catch(Exception e){
+                ret.put("status",500);
+                ret.remove("data");
+                ret.put("errMsg",e.getMessage());
+                return ret;
+            }
+            // 根据youminName获取词云
+            try {
+                wc = wordcloudService.getByName(youminName);
+                if (wc == null) {
+                    wc = new Wordcloud();
+                }
+            }catch (Exception e){
+                ret.put("status",500);
+                ret.remove("data");
                 ret.put("errMsg",e.getMessage());
                 return ret;
             }
         }
         if(baiduIndex == null) ((Map)(ret.get("data"))).put("baiduData",new HashMap());
         else ((Map)(ret.get("data"))).put("baiduData",baiduIndex);
+        if(news == null || news.size() <= 0) ((Map)(ret.get("data"))).put("news",new HashMap());
+        else ((Map)(ret.get("data"))).put("news",news);
         ((Map)(ret.get("data"))).put("youminData",newYouminData);
+        List compli = new ArrayList();
+        for (Game gi : competitors){
+            Map compMap = new HashMap();
+            compMap.put("_id", gi.get_id());
+            compMap.put("name", gi.getName());
+            compli.add(compMap);
+        }
+        ((Map)(ret.get("data"))).put("competitors",compli);
+        ((Map)(ret.get("data"))).put("wordcloud",wc.getPic_url());
+        ((Game)(((Map)(ret.get("data"))).get("tgbusData"))).setYouminData(null);
         return ret;
     }
 }

@@ -10,8 +10,7 @@ import zju.se.giligili.dao.GameRepository;
 import zju.se.giligili.model.Game;
 import zju.se.giligili.service.GameService;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service("gameService")
 public class GameServiceImpl implements GameService {
@@ -73,5 +72,28 @@ public class GameServiceImpl implements GameService {
         else
             return gameRepository.searchByConditions(key, conditions, filter, defaultPageble);
     }
-
+    @Override
+    public List<Game> getCompetitors(String id) {
+        Optional<Game> mainGameOpt = findOneById(id);
+        try {
+            Game mainGame = mainGameOpt.get();
+            if(mainGame.getType() != null || mainGame.getType().size() != 0) {
+                List<Game> list = new ArrayList<>();
+                for(String s:mainGame.getType()){
+                    Page<Game> comp = searchByConditions(s,s,"","","",1,1);
+                    list.addAll(comp.getContent());
+                    break;
+                }
+                System.out.println("666");
+                return list;
+            }
+            // TODO
+        }catch (Exception e){
+            System.out.println("666777");
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
+        System.out.println("666555");
+        return new ArrayList<>();
+    }
 }

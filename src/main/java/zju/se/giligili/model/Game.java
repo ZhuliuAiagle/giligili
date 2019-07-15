@@ -34,6 +34,5 @@ public class Game{
     private List<String> imgUrl;
     private Map youminData;
 
-
 }
 
