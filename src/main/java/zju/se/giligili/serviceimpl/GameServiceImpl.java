@@ -66,7 +66,7 @@ public class GameServiceImpl implements GameService {
             String b = year + "-12-31";
             filter = String.format(formatYear, a, b);
         }
-        System.out.println("11"+conditions);
+
         // 选择是默认搜索还是排序后搜索
         if(isOrdered == 1)
             return gameRepository.searchByConditions(key, conditions, filter, pageable);

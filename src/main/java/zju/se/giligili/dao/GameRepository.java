@@ -37,7 +37,8 @@ public interface GameRepository extends ElasticsearchRepository<Game, String> {
             "            \"multi_match\": {\n" +
             "                \"query\": \"?0\",\n" +
             "                \"type\": \"best_fields\",\n" +
-            "                \"fields\": [\"name^5\", \"introduction^2\", \"description^2\"],\n" +
+            "                \"fields\": [\"name^5\", \"introduction^2\", \"description^2\", " +
+            "                               \"type^2\", \"theme^2\", \"mode^2\"],\n" +
             "                \"tie_breaker\": 0.6\n" +
             "            }\n" +
             "        },\n" +
@@ -51,4 +52,6 @@ public interface GameRepository extends ElasticsearchRepository<Game, String> {
 
     @Query("{\"term\": {\"name.keyword\": \"?0\"}}")
     Game searchByName(String name);
+
+
 }
