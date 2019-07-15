@@ -105,6 +105,7 @@ public class SearchController {
         Game g;
         try {
             g = game.get();
+            if((Double)g.getAvgScore() > 10) g.setAvgScore(10);
         }catch (NoSuchElementException e){
             ret.put("status",404);
             ret.put("errMsg","No such id or name");
@@ -131,15 +132,14 @@ public class SearchController {
             // 获取youminname
             gameName = youminName;
             List<Map> youminScore = youminData.containsKey("score")?(List)youminData.get("score"):new ArrayList();
+            if(youminScore == null) youminScore = new ArrayList();
             newYouminData.put("score",youminScore);
             // 根据youminName获取百度指数
             try {
                 baiduIndex = baiduIndexService.getIndex(youminName);
             }catch(Exception e){
-                ret.put("status",500);
-                ret.remove("data");
-                ret.put("errMsg",e.getMessage());
-                return ret;
+                e.printStackTrace();
+                baiduIndex = null;
             }
             // 根据youminName获取新闻
             try{
@@ -152,10 +152,8 @@ public class SearchController {
                     news = member.getNews();
                 }
             }catch(Exception e){
-                ret.put("status",500);
-                ret.remove("data");
-                ret.put("errMsg",e.getMessage());
-                return ret;
+                e.printStackTrace();
+                news = null;
             }
             // 根据youminName获取词云
             try {
@@ -164,17 +162,18 @@ public class SearchController {
                     wc = new Wordcloud();
                 }
             }catch (Exception e){
-                ret.put("status",500);
-                ret.remove("data");
-                ret.put("errMsg",e.getMessage());
-                return ret;
+                e.printStackTrace();
+                wc = null;
             }
+        }
+        if(news != null && news.size() > 0){
+            if(((Map)(news.get(0))).isEmpty()){news = null;}
         }
         if(baiduIndex == null) ((Map)(ret.get("data"))).put("baiduData",new HashMap());
         else ((Map)(ret.get("data"))).put("baiduData",baiduIndex);
-        if(news == null || news.size() <= 0) ((Map)(ret.get("data"))).put("news",new HashMap());
+        if(news == null || news.size() <= 0) ((Map)(ret.get("data"))).put("news",new ArrayList());
         else ((Map)(ret.get("data"))).put("news",news);
-        ((Map)(ret.get("data"))).put("youminData",newYouminData);
+        ((Map)(ret.get("data"))).put("score",(newYouminData.get("score") == null)?new ArrayList():newYouminData.get("score"));
         List compli = new ArrayList();
         for (Game gi : competitors){
             Map compMap = new HashMap();
@@ -183,7 +182,8 @@ public class SearchController {
             compli.add(compMap);
         }
         ((Map)(ret.get("data"))).put("competitors",compli);
-        ((Map)(ret.get("data"))).put("wordcloud",wc.getPic_url());
+        if(wc == null || wc.getPic_url() == null) ((Map)(ret.get("data"))).put("wordcloud","");
+        else  ((Map)(ret.get("data"))).put("wordcloud",wc.getPic_url());
         ((Game)(((Map)(ret.get("data"))).get("tgbusData"))).setYouminData(null);
         return ret;
     }

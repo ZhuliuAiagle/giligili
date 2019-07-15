@@ -42,7 +42,8 @@ public class GameServiceImpl implements GameService {
         Pageable pageable = PageRequest.of((page - 1), 10, Sort.Direction.DESC, "avgScore");
         Pageable defaultPageble = PageRequest.of((page - 1), 10);
         String format       = "{\"match\":{\"%s.keyword\":\"%s\"}}";
-        String formatYear   = "\"gt\":\"%s\",\"lt\":\"%s\"";
+        String formatYear   = "\"gt\":\"%s\",\"lte\":\"%s\"";
+        String formatPass   = "\"lte\":\"%s\"";
         if(type != null && !type.equals("")){
             conditions += String.format(format,"type",type);
             conditions += ",";
@@ -61,9 +62,15 @@ public class GameServiceImpl implements GameService {
             conditions = b.toString();
         }
         if(!year.equals("")) {
-            String a = year + "-01-01";
+            String a = new Integer(Integer.parseInt(year) - 1).toString() + "-12-31";
             String b = year + "-12-31";
             filter = String.format(formatYear, a, b);
+            System.out.println(filter);
+        }
+        if(year.equals("2009")){
+            String a = year + "-12-31";
+            filter = String.format(formatPass,a);
+            System.out.println(filter);
         }
         System.out.println("11"+conditions);
         // 选择是默认搜索还是排序后搜索
@@ -79,13 +86,13 @@ public class GameServiceImpl implements GameService {
             Game mainGame = mainGameOpt.get();
             if(mainGame.getType() != null || mainGame.getType().size() != 0) {
                 List<Game> list = new ArrayList<>();
+                Set<Game> set = new HashSet<>();
                 for(String s:mainGame.getType()){
                     Page<Game> comp = searchByConditions(s,s,"","","",1,1);
-                    list.addAll(comp.getContent());
-                    break;
+                    set.addAll(comp.getContent());
                 }
                 System.out.println("666");
-                return list;
+                return new ArrayList<>(set);
             }
             // TODO
         }catch (Exception e){
