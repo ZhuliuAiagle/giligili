@@ -96,4 +96,8 @@ public class GameServiceImpl implements GameService {
         System.out.println("666555");
         return new ArrayList<>();
     }
+    @Override
+    public Game searchByName(String name) {
+        return gameRepository.searchByName(name);
+    }
 }
