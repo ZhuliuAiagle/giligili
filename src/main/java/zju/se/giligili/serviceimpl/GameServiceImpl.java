@@ -37,10 +37,13 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public Page<Game> searchByConditions(String key, String type, String theme, String mode, int page) {
+    public Page<Game> searchByConditions(String key, String type, String theme, String mode, String year, int page, int isOrdered) {
         String conditions = "";
-        Pageable pageable = PageRequest.of((page - 1), 10, Sort.Direction.DESC, "youminData.userScore");
-        String format = "{\"match\":{\"%s.keyword\":\"%s\"}}";
+        String filter = "";
+        Pageable pageable = PageRequest.of((page - 1), 10, Sort.Direction.DESC, "avgScore");
+        Pageable defaultPageble = PageRequest.of((page - 1), 10);
+        String format       = "{\"match\":{\"%s.keyword\":\"%s\"}}";
+        String formatYear   = "\"gt\":\"%s\",\"lt\":\"%s\"";
         if(type != null && !type.equals("")){
             conditions += String.format(format,"type",type);
             conditions += ",";
@@ -58,8 +61,17 @@ public class GameServiceImpl implements GameService {
             b.setLength(b.length() - 1);
             conditions = b.toString();
         }
+        if(!year.equals("")) {
+            String a = year + "-01-01";
+            String b = year + "-12-31";
+            filter = String.format(formatYear, a, b);
+        }
         System.out.println("11"+conditions);
-        return gameRepository.searchByConditions(key, conditions, pageable);
+        // 选择是默认搜索还是排序后搜索
+        if(isOrdered == 1)
+            return gameRepository.searchByConditions(key, conditions, filter, pageable);
+        else
+            return gameRepository.searchByConditions(key, conditions, filter, defaultPageble);
     }
 
 }

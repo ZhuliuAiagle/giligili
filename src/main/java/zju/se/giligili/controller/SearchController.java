@@ -51,10 +51,12 @@ public class SearchController {
                                   @RequestParam(name="type",required=false,defaultValue="") String type,
                                   @RequestParam(name="theme",required=false,defaultValue="") String theme,
                                   @RequestParam(name="mode",required=false,defaultValue="") String mode,
+                                  @RequestParam(name="isOrdered",required = false, defaultValue = "0") int isOrdered,
+                                  @RequestParam(name="year",required = false, defaultValue = "") String year,
                                   @RequestParam(name="page",required=false,defaultValue="1") int page){
         Map ret = new HashMap();
         try {
-            Page<Game> games = gameService.searchByConditions(key, type, theme, mode, page);
+            Page<Game> games = gameService.searchByConditions(key, type, theme, mode, year, page, isOrdered);
             if(games == null){
                 ret.put("status",200);
                 ret.put("results_count", 0);
@@ -75,13 +77,22 @@ public class SearchController {
             return ret;
         }
     }
-    @RequestMapping("/game/{id}")
-    public Map game(@PathVariable String id){
-        Optional<Game> game = gameService.findOneById(id);
+    @RequestMapping("/game")
+    public Map game(@RequestParam(name="id",required = false, defaultValue = "") String id,
+                    @RequestParam(name="id",required = false, defaultValue = "") String name){
+        Optional<Game> game = null;
+        if(!id.equals("")) {
+            game = gameService.findOneById(id);
+        }
+        else if(!name.equals("")){
+
+            // TODO: 做姓名精确匹配
+
+        }
         Map ret = new HashMap();
         if(game == null){
             ret.put("status",404);
-            ret.put("errMsg","No such id");
+            ret.put("errMsg","No such id or name");
             return ret;
         }
         ret.put("status",200);
@@ -90,7 +101,7 @@ public class SearchController {
             g = game.get();
         }catch (NoSuchElementException e){
             ret.put("status",404);
-            ret.put("errMsg","No such id");
+            ret.put("errMsg","No such id or name");
             return ret;
         }catch(Exception e){
             e.printStackTrace();
