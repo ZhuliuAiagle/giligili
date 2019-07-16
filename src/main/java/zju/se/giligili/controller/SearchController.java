@@ -10,11 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 import zju.se.giligili.model.BaiduIndex;
 import zju.se.giligili.model.Game;
 import zju.se.giligili.model.News;
+import zju.se.giligili.model.Process;
 import zju.se.giligili.model.Wordcloud;
-import zju.se.giligili.service.BaiduIndexService;
-import zju.se.giligili.service.GameService;
-import zju.se.giligili.service.NewsService;
-import zju.se.giligili.service.WordcloudService;
+import zju.se.giligili.service.*;
 
 import java.util.*;
 
@@ -30,6 +28,8 @@ public class SearchController {
     private NewsService newsService;
     @Autowired
     private WordcloudService wordcloudService;
+    @Autowired
+    private ProcessService processService;
 //    @RequestMapping("/games")
 //    public Map search(@RequestParam("key") String key){
 //        Map ret = new HashMap();
@@ -147,8 +147,41 @@ public class SearchController {
             ret.put("errMsg",e.getMessage());
             return ret;
         }
+        /////////////////////////////////////////////////
+        ///////// 按照类型等获取趋势 /////////////////////
+        List<String> type = g.getType() != null ? g.getType() : new ArrayList<>();
+        List<String> theme = g.getTheme() != null ? g.getTheme() : new ArrayList<>();
+        List<String> mode = g.getMode() != null ? g.getMode() : new ArrayList<>();
+        List trend = new ArrayList<>();
+        for(String s : type){
+            Process p = processService.getByName(s);
+            if(p == null) {
+                trend.add(new HashMap<>());
+            }else{
+                trend.add(p);
+            }
+        }
+        for(String s : theme){
+            Process p = processService.getByName(s);
+            if(p == null) {
+                trend.add(new HashMap<>());
+            }else{
+                trend.add(p);
+            }
+        }
+        for(String s : mode){
+            Process p = processService.getByName(s);
+            if(p == null) {
+                trend.add(new HashMap<>());
+            }else{
+                trend.add(p);
+            }
+        }
+
+        ///////////////////////////////////////////////
         ret.put("data",new HashMap());
         ((Map)(ret.get("data"))).put("tgbusData",g);
+        ((Map)(ret.get("data"))).put("trend",trend);
         Map newYouminData = new HashMap();
         // 百度指数初始化
         BaiduIndex baiduIndex = null;
