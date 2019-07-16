@@ -2,6 +2,7 @@ package zju.se.giligili.controller;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,7 +13,9 @@ import zju.se.giligili.service.BaiduIndexService;
 import zju.se.giligili.service.GameService;
 import zju.se.giligili.service.NewsService;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/test")
@@ -25,9 +28,10 @@ public class TestController {
     private NewsService newsService;
 
     @RequestMapping("/game")
-    public List<Game>  search(@RequestParam(value = "key") String key){
+    public Page<Game>  search(@RequestParam(value = "key") String key){
         System.out.println(key);
-        List<Game> games = gameService.searchLazy(key);
+        Page<Game> games = gameService.searchLazy(key);
+//        Map ret = new HashMap();
         return games;
 
     }

@@ -31,8 +31,9 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public List<Game> searchLazy(String key) {
-        return gameRepository.searchLazy(key);
+    public Page<Game> searchLazy(String key) {
+        Pageable pageable = PageRequest.of(0, 10, Sort.Direction.DESC, "avgScore");
+        return gameRepository.searchLazy(key, pageable);
     }
 
     @Override
@@ -45,22 +46,24 @@ public class GameServiceImpl implements GameService {
         String formatYear   = "\"gt\":\"%s\",\"lte\":\"%s\"";
         String formatPass   = "\"lte\":\"%s\"";
         if(type != null && !type.equals("")){
-            conditions += String.format(format,"type",type);
             conditions += ",";
+            conditions += String.format(format,"type",type);
+
         }
         if(theme != null && !theme.equals("")){
-            conditions += String.format(format,"theme",theme);
             conditions += ",";
+            conditions += String.format(format,"theme",theme);
         }
         if(mode != null && !mode.equals("")){
-            conditions += String.format(format,"mode",mode);
             conditions += ",";
+            conditions += String.format(format,"mode",mode);
+
         }
-        if(!conditions.equals("")) {
-            StringBuilder b = new StringBuilder(conditions);
-            b.setLength(b.length() - 1);
-            conditions = b.toString();
-        }
+//        if(!conditions.equals("")) {
+//            StringBuilder b = new StringBuilder(conditions);
+//            b.setLength(b.length() - 1);
+//            conditions = b.toString();
+//        }
         if(!year.equals("")) {
             String a = new Integer(Integer.parseInt(year) - 1).toString() + "-12-31";
             String b = year + "-12-31";

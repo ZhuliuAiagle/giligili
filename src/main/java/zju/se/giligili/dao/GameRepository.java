@@ -26,30 +26,31 @@ public interface GameRepository extends ElasticsearchRepository<Game, String> {
             "        \"introduction^2\",\n" +
             "        \"description^2\"\n" +
             "    ],\n" +
+            "    \"minimum_should_match\": \"80%\"," +
             "    \"tie_breaker\": 0.6\n" +
             "   }" +
             "}")
-    List<Game> searchLazy(String key);
+    Page<Game> searchLazy(String key, Pageable pageable);
 
     @Query("{\n" +
             "    \"bool\": {\n" +
-            "        \"should\": {\n" +
+            "        \"must\": [{\n" +
             "            \"multi_match\": {\n" +
             "                \"query\": \"?0\",\n" +
             "                \"type\": \"best_fields\",\n" +
             "                \"fields\": [\"name^5\", \"introduction^2\", \"description^2\", " +
             "                               \"type^2\", \"theme^2\", \"mode^2\"],\n" +
-            "                \"tie_breaker\": 0.6\n" +
+            "                \"minimum_should_match\": \"80%\"," +
+            "                \"tie_breaker\": 0.4\n" +
             "            }\n" +
-            "        },\n" +
-            "        \"must\": [?1],\n" +
+            "        }?1],\n" +
+//            "        \"must\": [?1],\n" +
             "        \"filter\": {\n" +
             "            \"range\": {\"startDate\" : {?2} }\n" +
             "        }\n" +
             "    }   \n" +
             "}")
     Page<Game> searchByConditions(String key, String conditions, String filter, Pageable pageable);
-
     @Query("{\"term\": {\"name.keyword\": \"?0\"}}")
     Game searchByName(String name);
 
