@@ -40,8 +40,9 @@ public class GameServiceImpl implements GameService {
     public Page<Game> searchByConditions(String key, String type, String theme, String mode, String year, int page, int isOrdered) {
         String conditions = "";
         String filter = "";
-        Pageable pageable = PageRequest.of((page - 1), 10, Sort.Direction.DESC, "avgScore");
+        Pageable descPageable = PageRequest.of((page - 1), 10, Sort.Direction.DESC, "avgScore");
         Pageable defaultPageble = PageRequest.of((page - 1), 10);
+        Pageable ascPagebale = PageRequest.of((page - 1), 10, Sort.Direction.ASC, "avgScore");
         String format       = "{\"match\":{\"%s.keyword\":\"%s\"}}";
         String formatYear   = "\"gt\":\"%s\",\"lte\":\"%s\"";
         String formatPass   = "\"lte\":\"%s\"";
@@ -78,7 +79,10 @@ public class GameServiceImpl implements GameService {
         System.out.println("Conditions: " + conditions);
         // 选择是默认搜索还是排序后搜索
         if(isOrdered == 1) {
-            return gameRepository.searchByConditions(key, conditions, filter, pageable);
+            return gameRepository.searchByConditions(key, conditions, filter, descPageable);
+        }
+        else if(isOrdered == -1){
+            return gameRepository.searchByConditions(key, conditions, filter, ascPagebale);
         }
         else {
             return gameRepository.searchByConditions(key, conditions, filter, defaultPageble);
