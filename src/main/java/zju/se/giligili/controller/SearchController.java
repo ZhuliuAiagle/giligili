@@ -3,6 +3,7 @@ package zju.se.giligili.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,6 +18,7 @@ import zju.se.giligili.service.WordcloudService;
 
 import java.util.*;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/search")
 public class SearchController {
