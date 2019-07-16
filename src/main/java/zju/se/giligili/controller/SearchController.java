@@ -210,6 +210,12 @@ public class SearchController {
             Map compMap = new HashMap();
             compMap.put("_id", gi.get_id());
             compMap.put("name", gi.getName());
+            BaiduIndex compIndex;
+            try {
+                compIndex = baiduIndexService.getIndex(gi.getName());
+            }catch(Exception e){compIndex = null;}
+            if(compIndex == null) compMap.put("baiduIndex", new HashMap());
+            else compMap.put("baiduIndex",compIndex);
             compli.add(compMap);
         }
         ((Map)(ret.get("data"))).put("competitors",compli);
