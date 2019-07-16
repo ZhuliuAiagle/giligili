@@ -24,6 +24,8 @@ public class BaiduIndex {
 
     private Map wise;
 
+    private Map pc;
+
     private Map sex;
 
 }
