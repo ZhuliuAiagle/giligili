@@ -88,6 +88,60 @@ public class GameServiceImpl implements GameService {
             return gameRepository.searchByConditions(key, conditions, filter, defaultPageble);
         }
     }
+
+    @Override
+    public Page<Game> searchOnlyByConditions(String key, String type, String theme, String mode, String year, int page, int isOrdered) {
+        String conditions = "";
+        String filter = "";
+        Pageable descPageable = PageRequest.of((page - 1), 10, Sort.Direction.DESC, "avgScore");
+        Pageable defaultPageble = PageRequest.of((page - 1), 10);
+        Pageable ascPagebale = PageRequest.of((page - 1), 10, Sort.Direction.ASC, "avgScore");
+        String format       = "{\"match\":{\"%s.keyword\":\"%s\"}}";
+        String formatYear   = "\"gt\":\"%s\",\"lte\":\"%s\"";
+        String formatPass   = "\"lte\":\"%s\"";
+        if(type != null && !type.equals("")){
+            conditions += String.format(format,"type",type);
+            conditions += ",";
+
+        }
+        if(theme != null && !theme.equals("")){
+            conditions += String.format(format,"theme",theme);
+            conditions += ",";
+        }
+        if(mode != null && !mode.equals("")){
+            conditions += String.format(format,"mode",mode);
+            conditions += ",";
+
+        }
+        if(!conditions.equals("")) {
+            StringBuilder b = new StringBuilder(conditions);
+            b.setLength(b.length() - 1);
+            conditions = b.toString();
+        }
+        if(!year.equals("")) {
+            String a = new Integer(Integer.parseInt(year) - 1).toString() + "-12-31";
+            String b = year + "-12-31";
+            filter = String.format(formatYear, a, b);
+            System.out.println(filter);
+        }
+        if(year.equals("2009")){
+            String a = year + "-12-31";
+            filter = String.format(formatPass,a);
+            System.out.println(filter);
+        }
+        System.out.println("Conditions: " + conditions);
+        // 选择是默认搜索还是排序后搜索
+        if(isOrdered == 1) {
+            return gameRepository.searchOnlyByConditions(key, conditions, filter, descPageable);
+        }
+        else if(isOrdered == -1){
+            return gameRepository.searchOnlyByConditions(key, conditions, filter, ascPagebale);
+        }
+        else {
+            return gameRepository.searchOnlyByConditions(key, conditions, filter, defaultPageble);
+        }
+    }
+
     @Override
     public List<Game> getCompetitors(String id) {
         Optional<Game> mainGameOpt = findOneById(id);

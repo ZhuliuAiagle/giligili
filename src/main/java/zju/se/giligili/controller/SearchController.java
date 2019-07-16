@@ -28,31 +28,31 @@ public class SearchController {
     private NewsService newsService;
     @Autowired
     private WordcloudService wordcloudService;
-    @RequestMapping("/games")
-    public Map search(@RequestParam("key") String key){
-        Map ret = new HashMap();
-        try {
-            List<Game> games = gameService.findAllByName(key);
-            if(games == null){
-                ret.put("status",200);
-                ret.put("results_count", 0);
-                ret.put("data", new ArrayList<>());
-                return ret;
-            }
-            else{
-                ret.put("status",200);
-                ret.put("resultsCount", games.size());
-                ret.put("data", games);
-                return ret;
-            }
-        }
-        catch(Exception e){
-            e.printStackTrace();
-            ret.put("status",500);
-            ret.put("errMsg",e.getMessage());
-            return ret;
-        }
-    }
+//    @RequestMapping("/games")
+//    public Map search(@RequestParam("key") String key){
+//        Map ret = new HashMap();
+//        try {
+//            List<Game> games = gameService.findAllByName(key);
+//            if(games == null){
+//                ret.put("status",200);
+//                ret.put("results_count", 0);
+//                ret.put("data", new ArrayList<>());
+//                return ret;
+//            }
+//            else{
+//                ret.put("status",200);
+//                ret.put("resultsCount", games.size());
+//                ret.put("data", games);
+//                return ret;
+//            }
+//        }
+//        catch(Exception e){
+//            e.printStackTrace();
+//            ret.put("status",500);
+//            ret.put("errMsg",e.getMessage());
+//            return ret;
+//        }
+//    }
     @RequestMapping("/s")
     public Map searchByConditions(@RequestParam(name="key") String key,
                                   @RequestParam(name="type",required=false,defaultValue="") String type,
@@ -64,6 +64,37 @@ public class SearchController {
         Map ret = new HashMap();
         try {
             Page<Game> games = gameService.searchByConditions(key, type, theme, mode, year, page, isOrdered);
+            if(games == null){
+                ret.put("status",200);
+                ret.put("results_count", 0);
+                ret.put("data", new ArrayList());
+                return ret;
+            }
+            else{
+                ret.put("status",200);
+                ret.put("resultsCount", games.getSize());
+                ret.put("data", games);
+                return ret;
+            }
+        }
+        catch(Exception e){
+            e.printStackTrace();
+            ret.put("status",500);
+            ret.put("errMsg",e.getMessage());
+            return ret;
+        }
+    }
+    @RequestMapping("/games")
+    public Map searchOnlyByConditions(@RequestParam(name="key",required=false,defaultValue="") String key,
+                                  @RequestParam(name="type",required=false,defaultValue="") String type,
+                                  @RequestParam(name="theme",required=false,defaultValue="") String theme,
+                                  @RequestParam(name="mode",required=false,defaultValue="") String mode,
+                                  @RequestParam(name="isOrdered",required = false, defaultValue = "0") int isOrdered,
+                                  @RequestParam(name="year",required = false, defaultValue = "") String year,
+                                  @RequestParam(name="page",required=false,defaultValue="1") int page){
+        Map ret = new HashMap();
+        try {
+            Page<Game> games = gameService.searchOnlyByConditions(key, type, theme, mode, year, page, isOrdered);
             if(games == null){
                 ret.put("status",200);
                 ret.put("results_count", 0);
