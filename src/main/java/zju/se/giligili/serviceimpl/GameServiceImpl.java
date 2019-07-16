@@ -75,12 +75,14 @@ public class GameServiceImpl implements GameService {
             filter = String.format(formatPass,a);
             System.out.println(filter);
         }
-        System.out.println("11"+conditions);
+        System.out.println("Conditions: " + conditions);
         // 选择是默认搜索还是排序后搜索
-        if(isOrdered == 1)
+        if(isOrdered == 1) {
             return gameRepository.searchByConditions(key, conditions, filter, pageable);
-        else
+        }
+        else {
             return gameRepository.searchByConditions(key, conditions, filter, defaultPageble);
+        }
     }
     @Override
     public List<Game> getCompetitors(String id) {
