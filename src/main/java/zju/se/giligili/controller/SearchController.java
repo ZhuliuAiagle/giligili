@@ -7,11 +7,9 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import zju.se.giligili.model.BaiduIndex;
-import zju.se.giligili.model.Game;
-import zju.se.giligili.model.News;
+import zju.se.giligili.dao.YouminScoreNewDao;
+import zju.se.giligili.model.*;
 import zju.se.giligili.model.Process;
-import zju.se.giligili.model.Wordcloud;
 import zju.se.giligili.service.*;
 
 import java.util.*;
@@ -30,6 +28,8 @@ public class SearchController {
     private WordcloudService wordcloudService;
     @Autowired
     private ProcessService processService;
+    @Autowired
+    private YouminScoreNewDao youminScoreNewDao;
 //    @RequestMapping("/games")
 //    public Map search(@RequestParam("key") String key){
 //        Map ret = new HashMap();
@@ -177,7 +177,6 @@ public class SearchController {
                 trend.add(p);
             }
         }
-
         ///////////////////////////////////////////////
         ret.put("data",new HashMap());
         ((Map)(ret.get("data"))).put("tgbusData",g);
@@ -195,8 +194,8 @@ public class SearchController {
             String youminName = (String)youminData.get("name");
             // 获取youminname
             gameName = youminName;
-            List<Map> youminScore = youminData.containsKey("score")?(List)youminData.get("score"):new ArrayList();
-            if(youminScore == null) youminScore = new ArrayList();
+            YouminScoreNew youminScoreObject = youminScoreNewDao.getByName(youminName);
+            List<Map> youminScore = youminScoreObject.getScore() != null && !youminScoreObject.getScore().isEmpty()?youminScoreObject.getScore():new ArrayList();
             newYouminData.put("score",youminScore);
             // 根据youminName获取百度指数
             try {

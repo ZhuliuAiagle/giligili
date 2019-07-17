@@ -155,6 +155,12 @@ public class GameServiceImpl implements GameService {
                     set.addAll(comp.getContent());
                 }
                 System.out.println("666");
+                for(Game s: set){
+                    if(s.get_id().equals(id)){
+                        set.remove(s);
+                        break;
+                    }
+                }
                 return new ArrayList<>(set);
             }
             // TODO
