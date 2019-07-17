@@ -233,7 +233,10 @@ public class SearchController {
             if(((Map)(news.get(0))).isEmpty()){news = null;}
         }
         if(baiduIndex == null) ((Map)(ret.get("data"))).put("baiduData",new HashMap());
+        else if(baiduIndex.getAll() == null || baiduIndex.getPc() == null || baiduIndex.getWise() == null)
+            ((Map)(ret.get("data"))).put("baiduData",new HashMap());
         else ((Map)(ret.get("data"))).put("baiduData",baiduIndex);
+
         if(news == null || news.size() <= 0) ((Map)(ret.get("data"))).put("news",new ArrayList());
         else ((Map)(ret.get("data"))).put("news",news);
         ((Map)(ret.get("data"))).put("score",(newYouminData.get("score") == null)?new ArrayList():newYouminData.get("score"));
